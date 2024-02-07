@@ -23,10 +23,12 @@ let est_case ((i,j,k):case):bool=
 let associe (a:'a) (l:('a*'b) list) (defaut:'b):'b = defaut;;
 
 (*A MODIFIER en Q2*)
-let est_dans_losange ((i, j, k) : case)  (dim:dimension): bool =true;;           
+let est_dans_losange ((i, j, k) : case)  (dim:dimension): bool =
+-dim<=j && j<= dim && -dim <= k && k <= dim;;           
 
 (*A MODIFIER en Q3*)
-let est_dans_etoile ((i, j, k) : case) (dim:dimension) : bool = true;;
+let est_dans_etoile ((i, j, k) : case) (dim:dimension) : bool = 
+(-2*dim <= i && i <= 2*dim) || (-2*dim <= j && j <= 2*dim) || (-2*dim <= k && k <= 2*dim);;
 
 (*AFFICHAGE (fonctionne si les fonctions au dessus sont remplies)*)
 (*transfo transforme des coordonnees cartesiennes (x,y) en coordonnees de case (i,j,k)*)
