@@ -45,6 +45,18 @@ let tourner_case (m:int) (c:case) : case =
 		|4 | -2 -> (k,i,j)
 		|5 | -1 -> (-j,-k,-i);;
 
+(*Q8*)
+let calcul_pivot (c1:case) (c2:case) : case option = 
+	let i1,j1,k1 = c1 and i2,j2,k2 = c2 in
+		if i1=i2 && j1 mod 2 = j2 mod 2 && k1 mod 2 = k2 mod 2 then
+			Some (i1,(j1+j2)/2,(k1+k2)/2)
+		else if j1=j2 && i1 mod 2 = i2 mod 2 && k1 mod 2 = k2 mod 2 then
+			Some ((i1+i2)/2,j1,(k1+k2)/2)
+		else if k1=k2 && i1 mod 2 = i2 mod 2 && j1 mod 2 = j2 mod 2 then
+			Some ((i1+i2)/2,(j1+j2)/2,k1)
+		else 
+			None;;
+
 
 let couleur2string (coul:couleur):string =
   match coul with
