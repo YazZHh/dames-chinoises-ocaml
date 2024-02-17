@@ -63,11 +63,11 @@ let sont_cases_voisines (c1:case) (c2:case) : bool =
 (*Q8*)
 let calcul_pivot (c1:case) (c2:case) : case option = 
 	let i1,j1,k1 = c1 and i2,j2,k2 = c2 in
-		if i1=i2 && j1 mod 2 = j2 mod 2 && k1 mod 2 = k2 mod 2 then
+		if i1=i2 && abs(j1 mod 2) = abs(j2 mod 2) && abs(k1 mod 2) = abs(k2 mod 2) then
 			Some (i1,(j1+j2)/2,(k1+k2)/2)
-		else if j1=j2 && i1 mod 2 = i2 mod 2 && k1 mod 2 = k2 mod 2 then
+		else if j1=j2 && abs(i1 mod 2) = abs(i2 mod 2) && abs(k1 mod 2) = abs(k2 mod 2) then
 			Some ((i1+i2)/2,j1,(k1+k2)/2)
-		else if k1=k2 && i1 mod 2 = i2 mod 2 && j1 mod 2 = j2 mod 2 then
+		else if k1=k2 && abs(i1 mod 2) = abs(i2 mod 2) && abs(j1 mod 2) = abs(j2 mod 2) then
 			Some ((i1+i2)/2,(j1+j2)/2,k1)
 		else 
 			None;;
