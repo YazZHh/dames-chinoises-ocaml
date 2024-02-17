@@ -34,6 +34,18 @@ let est_dans_etoile ((i, j, k) : case) (dim:dimension) : bool =
 (*transfo transforme des coordonnees cartesiennes (x,y) en coordonnees de case (i,j,k)*)
 let transfo x y = (y, (x-y)/2,(-x-y)/2);;
 
+(*Q4*)
+let tourner_case (m:int) (c:case) : case = 
+	let i,j,k = c in
+		match m mod 6 with
+		|0 -> (i,j,k)
+		|1 | -5 -> (-k,-i,-j)
+		|2 | -4 -> (j,k,i)
+		|3 | -3 -> (-i,-j,-k)
+		|4 | -2 -> (k,i,j)
+		|5 | -1 -> (-j,-k,-i);;
+
+
 let couleur2string (coul:couleur):string =
   match coul with
   | Libre -> " . "
