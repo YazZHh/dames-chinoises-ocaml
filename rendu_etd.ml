@@ -45,6 +45,21 @@ let tourner_case (m:int) (c:case) : case =
 		|4 | -2 -> (k,i,j)
 		|5 | -1 -> (-j,-k,-i);;
 
+(*Q5*)
+let translate (c:case) (v:vecteur) : case = 
+	let c1,c2,c3 = c and v1,v2,v3 = v in
+		(c1+v1,c2+v2,c3+v3);;
+(*Q6*)
+let diff_case (c1:case) (c2:case) : vecteur = 
+	let i1,j1,k1 = c1 and i2,j2,k2 = c2 in
+		(i1-i1,j1-j2,k1-k2);;
+(*Q7*)
+let sont_cases_voisines (c1:case) (c2:case) : bool = 
+	let vect_diff = diff_case c1 c2 in
+		let i,j,k = vect_diff in
+			(abs(i) = 1 && abs(j) = 1) || (abs(i) = 1 && abs(k) = 1) || (abs(j) = 1 && abs(k) = 1);;
+
+
 (*Q8*)
 let calcul_pivot (c1:case) (c2:case) : case option = 
 	let i1,j1,k1 = c1 and i2,j2,k2 = c2 in
