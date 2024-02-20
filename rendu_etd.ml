@@ -72,6 +72,12 @@ let calcul_pivot (c1:case) (c2:case) : case option =
 		else 
 			None;;
 
+(*Q9*)
+let vec_et_dist (c1:case) (c2:case):vecteur*int = 
+  let i,j,k = diff_case c1 c2 in
+  let d = max (max (abs (i)) (abs (j))) (abs (k)) in
+  ((i/d,j/d,k/d),d);;
+
 
 let couleur2string (coul:couleur):string =
   match coul with
