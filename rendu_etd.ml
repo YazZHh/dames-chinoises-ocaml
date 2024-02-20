@@ -52,7 +52,7 @@ let translate (c:case) (v:vecteur) : case =
 (*Q6*)
 let diff_case (c1:case) (c2:case) : vecteur = 
 	let i1,j1,k1 = c1 and i2,j2,k2 = c2 in
-		(i1-i1,j1-j2,k1-k2);;
+		(i1-i2,j1-j2,k1-k2);;
 (*Q7*)
 let sont_cases_voisines (c1:case) (c2:case) : bool = 
 	let vect_diff = diff_case c1 c2 in
