@@ -53,7 +53,8 @@ let tourner_case (m:int) (c:case) : case =
 		|2 | -4 -> (j,k,i)
 		|3 | -3 -> (-i,-j,-k)
 		|4 | -2 -> (k,i,j)
-		|5 | -1 -> (-j,-k,-i);;
+		|5 | -1 -> (-j,-k,-i);; (* Le match n'est pas exhaustif pourtant il n'y a
+                             aucun cas qui n'est pas traité*)
 
 (*Q5*)
 let translate (c:case) (v:vecteur) : case = 
