@@ -1,3 +1,11 @@
+(* -----------------------------------------------------------------------------
+   inf201_Mace_Stefan_deValicourt_Nonis_Q1-Q9.ml : cr Q1 Q9 projet
+   Erwan Mace <Erwan.Mace@etu.univ-grenoble-alpes.fr>
+   David Voicu <David.Voicu@etu.univ-grenoble-alpes.fr>
+   Amaury de Valicourt <Amaury.De-Valicourt@etu.univ-grenoble-alpes.fr>
+   Dario Nonis <Dario.Nonis@etu.univ-grenoble-alpes.fr>
+   -------------------------------------------------------------------------- *)
+
 type dimension = int;; (*restreint aux entiers strictement positifs*)
 
 type case = int * int * int;; (*restreint au triplet tels (i,j,k) tels que i+j+k=0*)
