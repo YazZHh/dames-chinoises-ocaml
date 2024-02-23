@@ -22,11 +22,21 @@ let est_case ((i,j,k):case):bool=
 
 let associe (a:'a) (l:('a*'b) list) (defaut:'b):'b = defaut;;
 
+(*Q1 : 
+1) Correspond à la base sud (la notre)
+2) Correspond à la base nord (la base de l'adversaire)
+3) Correspond à la base nord ouest
+4) Correspond a la pointe nored du plateau
+5) Correspond au point le plus a gauche de la base sud
+6) Forme un triangle qui englobe tout le plateau et qui exclus les base sud, nord est et nord ouest
+*)
 (*A MODIFIER en Q2*)
 let est_dans_losange ((i, j, k) : case)  (dim:dimension): bool =
 -dim<=j && j<= dim && -dim <= k && k <= dim;;           
 
-(*A MODIFIER en Q3*)
+(*A MODIFIER en Q3
+Choix de definir l'étoile par l'union de trois grand losange
+*)
 let est_dans_etoile ((i, j, k) : case) (dim:dimension) : bool = 
 (-2*dim <= i && i <= 2*dim) || (-2*dim <= j && j <= 2*dim) || (-2*dim <= k && k <= 2*dim);;
 
