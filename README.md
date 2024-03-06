@@ -1,5 +1,5 @@
 # dames-chinoises-ocaml
-Projet encadré porté sur le jeux des dames chinoises, développé en programmation fonctionnelle en OCaml
+Projet encadré porté sur le jeu des dames chinoises, développé en programmation fonctionnelle en OCaml
 
 # Installation
 Pour faire tourner ce programme, il vous faut installer OCaml
