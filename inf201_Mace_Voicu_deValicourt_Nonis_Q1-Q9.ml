@@ -136,7 +136,12 @@ let rec remplir_triangle_haut(m:int)(c:case):case list=
   |m when m<=0 -> []
   |_ -> remplir_segment m c @ remplir_triangle_haut (m-1) (i+1,j,k-1)
 ;;
-
+(*Q14*)
+let colorie(coul:couleur)(lc:case list):case_coloree list =
+  match lc with
+  |[] -> []
+  |pr::fin -> [pr,coul]@colorie coul fin
+;;
 
 let couleur2string (coul:couleur):string =
   match coul with
