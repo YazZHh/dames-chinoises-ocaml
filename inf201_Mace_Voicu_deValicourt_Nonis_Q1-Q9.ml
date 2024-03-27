@@ -99,6 +99,26 @@ let vec_et_dist (c1:case) (c2:case):vecteur*int =
   let d = max (max i j) k in
   ((i/d,j/d,k/d),d);;
 
+(*Q10*)
+let tourner_liste(s:'a list):'a list=
+  match s with
+  |[] -> []
+  |pr::fin -> fin@[pr];;
+
+let rec der_liste(s:'a list):'a=
+  match s with
+  |[pr] -> pr
+  |pr::fin -> der_liste fin;;
+
+(*Q11*)
+type case = int*int*int;;
+let rec remplir_segment(m:int)(c:case):case list=
+  let i,j,k = c in
+  match m with
+  |m when m<=0 -> []
+  |_ -> [c]@remplir_segment (m-1) (i,j+1,k-1)
+;;
+
 
 let couleur2string (coul:couleur):string =
   match coul with
