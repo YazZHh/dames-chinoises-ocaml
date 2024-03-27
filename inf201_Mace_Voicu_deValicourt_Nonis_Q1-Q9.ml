@@ -108,7 +108,9 @@ let tourner_liste(s:'a list):'a list=
 let rec der_liste(s:'a list):'a=
   match s with
   |[pr] -> pr
-  |pr::fin -> der_liste fin;;
+  |pr::fin -> der_liste fin
+[@@warning "-8"]
+;;
 
 (*Q11*)
 type case = int*int*int;;
@@ -117,6 +119,14 @@ let rec remplir_segment(m:int)(c:case):case list=
   match m with
   |m when m<=0 -> []
   |_ -> [c]@remplir_segment (m-1) (i,j+1,k-1)
+;;
+
+(*Q12*)
+let rec remplir_triangle_bas(m:int)(c:case):case list=
+  let i,j,k = c in
+  match m with
+  |m when m<=0 -> []
+  |_ -> remplir_segment m c @ remplir_triangle_bas (m-1) (i-1,j+1,k)
 ;;
 
 
