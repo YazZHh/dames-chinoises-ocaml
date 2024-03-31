@@ -113,7 +113,6 @@ let rec der_liste(s:'a list):'a=
 ;;
 
 (*Q11*)
-type case = int*int*int;;
 let rec remplir_segment(m:int)(c:case):case list=
   let i,j,k = c in
   match m with
@@ -141,6 +140,25 @@ let colorie(coul:couleur)(lc:case list):case_coloree list =
   match lc with
   |[] -> []
   |pr::fin -> [pr,coul]@colorie coul fin
+;;
+(*Q15*)
+let rec len(s:'a list):int=(*fonction auxilière pour calculer le nb de joueur
+(longueur de la liste couleur)*)
+  match s with
+  |[] -> 0
+  |pr::fin -> 1 + len fin
+;;
+
+let rec tourner_liste_case(m:int)(s:case_coloree list):case_coloree list=
+(*fonction auxilière pour tourner toutes les cases d'une liste*)
+  match s with
+  |[] -> []
+  |(case,col)::fin -> [(tourner_case m case,col)]@tourner_liste_case m fin
+;;
+
+let tourner_config (case_col,coul,dim:configuration):configuration=
+  let m = 6/(len coul) in 
+  tourner_liste_case m case_col,tourner_liste coul,dim
 ;;
 
 let couleur2string (coul:couleur):string =
