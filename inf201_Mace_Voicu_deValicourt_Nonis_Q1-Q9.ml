@@ -161,6 +161,16 @@ let tourner_config (case_col,coul,dim:configuration):configuration=
   tourner_liste_case m case_col,tourner_liste coul,dim
 ;;
 
+let rec remplir_init(ljoueurs:couleur list) (dim:dimension):configuration= 
+  match ljoueurs with
+  |[] -> ([],[],dim)
+  |pr::fin when len ljoueurs = 6 -> let (l_points_col,l_col,dim) = remplir_init fin dim in 
+      let case_gauche = ((-dim)-1,1,dim) in
+      let liste_cases = remplir_triangle_bas dim case_gauche in
+      let liste_col = colorie pr liste_cases in 
+      let liste_tournee = tourner_liste_case (6) liste_col in
+      (liste_tournee @ l_points_col,[pr]@l_col,dim);;
+
 let couleur2string (coul:couleur):string =
   match coul with
   | Libre -> " . "
