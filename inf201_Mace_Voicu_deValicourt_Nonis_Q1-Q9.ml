@@ -28,7 +28,10 @@ let indice_valide (x:int) (dim:dimension) : bool =
 let est_case ((i,j,k):case):bool=
   (i+j+k=0);;
 
-let associe (a:'a) (l:('a*'b) list) (defaut:'b):'b = defaut;;
+let associe (a:'a) (l:('a*'b) list) (defaut:'b):'b = defaut
+match l with
+  |[]->defaut
+  |(case,col)::fin -> if case  = a then col else associe a fin defaut;;
 
 (*Q1 : 
 1) Correspond à la base sud (la notre)
@@ -170,6 +173,18 @@ let rec remplir_init(ljoueurs:couleur list) (dim:dimension):configuration=
       let liste_col = colorie pr liste_cases in 
       let liste_tournee = tourner_liste_case (6) liste_col in
       (liste_tournee @ l_points_col,[pr]@l_col,dim);;
+
+(*Q17*)
+let quelle_couleur (c:case) ((l_case_color,l_col,dim):configuration):couleur=
+  associe c l_case_color Libre;;
+(*Q18*)
+let rec supprime_dans_config (c:case)(conf:configuration):configuration=
+  match conf with
+  |([],l_col,dim) ->([],l_col,dim) 
+  |((p,col)::fin,l_couleurs,dim) -> let l_points,l_couleurs,dim = supprime_dans_config c (fin,l_couleurs,dim) in
+      if c = p then l_points,l_couleurs,dim else [p,col]@l_points,l_couleurs,dim
+;;
+
 
 let couleur2string (coul:couleur):string =
   match coul with
