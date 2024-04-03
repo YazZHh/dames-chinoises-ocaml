@@ -28,7 +28,7 @@ let indice_valide (x:int) (dim:dimension) : bool =
 let est_case ((i,j,k):case):bool=
   (i+j+k=0);;
 
-let associe (a:'a) (l:('a*'b) list) (defaut:'b):'b = defaut
+let rec associe (a:'a) (l:('a*'b) list) (defaut:'b):'b = 
 match l with
   |[]->defaut
   |(case,col)::fin -> if case  = a then col else associe a fin defaut;;
@@ -49,8 +49,7 @@ let est_dans_losange ((i, j, k) : case)  (dim:dimension): bool =
 Choix de definir l'étoile par l'union de trois grand losange
 *)
 let est_dans_etoile ((i, j, k) : case) (dim:dimension) : bool = 
-  (-2*dim <= i && i <= 2*dim) || (-2*dim <= j && j <= 2*dim) || (-2*dim <= k && k <= 2*dim);;
-
+  (est_dans_losange (i,j,k) dim) || (est_dans_losange (k,i,j) dim) || (est_dans_losange (j,k,i) dim);;
 (*AFFICHAGE (fonctionne si les fonctions au dessus sont remplies)*)
 (*transfo transforme des coordonnees cartesiennes (x,y) en coordonnees de case (i,j,k)*)
 let transfo x y = (y, (x-y)/2,(-x-y)/2);;
