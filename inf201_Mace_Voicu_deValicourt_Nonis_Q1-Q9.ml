@@ -167,11 +167,11 @@ let tourner_config (case_col,coul,dim:configuration):configuration=
 let rec coord_case(n:int)(ljoueurs:couleur list)(dim:dimension):case_coloree list=
   match ljoueurs with
   |[] -> []
-  |pr::fin -> tourner_liste_case (6/n)(colorie pr ( remplir_triangle_bas dim (-dim-1,1,dim))@coord_case n fin dim)
+  |pr::fin -> tourner_liste_case (-1*6/n)(colorie pr ( remplir_triangle_bas dim (-dim-1,1,dim))@coord_case n fin dim)
 ;;
 
 let remplir_init(ljoueurs:couleur list)(dim:dimension):configuration=
-  coord_case (len ljoueurs) ljoueurs dim,ljoueurs,dim
+  tourner_config(coord_case (len ljoueurs) ljoueurs dim,ljoueurs,dim)
 ;;
 (*Q17*)
 let quelle_couleur (c:case) ((l_case_color,l_col,dim):configuration):couleur=
