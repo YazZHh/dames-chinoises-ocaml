@@ -183,6 +183,24 @@ let rec supprime_dans_config (c:case)(conf:configuration):configuration=
   |((p,col)::fin,l_couleurs,dim) -> let l_points,l_couleurs,dim = supprime_dans_config c (fin,l_couleurs,dim) in
       if c = p then l_points,l_couleurs,dim else [p,col]@l_points,l_couleurs,dim
 ;;
+(*Q19*)
+let est_coup_valide(lcase,pr::fin,dim:configuration)(Du(c1,c2):coup):bool=
+  sont_cases_voisines c1 c2 && quelle_couleur c1 (lcase,pr::fin,dim) = pr && quelle_couleur c2 (lcase,pr::fin,dim) = Libre && est_dans_losange c2 dim
+[@@warning "-8"]
+;;
+(*Q20*)
+let rec appliquer_coup(lcase,ljoueur,dim:configuration)(Du(c1,c2):coup):configuration=
+  match lcase with 
+  |(c,cou)::fin when c=c1 -> [c2,cou]@fin,ljoueur,dim
+  |pr::fin -> let lcase2,ljoueur2,dim2= appliquer_coup (fin,ljoueur,dim)(Du(c1,c2)) in [pr]@lcase2,ljoueur2,dim2
+[@@warning "-8"]
+;;
+(*Q21*)
+let mettre_a_jour_configuration(lcase,ljoueur,dim:configuration)(cou:coup):configuration=
+  match est_coup_valide (lcase,ljoueur,dim) cou with
+  |true -> appliquer_coup (lcase,ljoueur,dim) cou
+  |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer"
+;;
 
 
 let couleur2string (coul:couleur):string =
