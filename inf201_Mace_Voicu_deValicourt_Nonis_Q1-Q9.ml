@@ -164,16 +164,14 @@ let tourner_config (case_col,coul,dim:configuration):configuration=
 ;;
 
 (*Q16*)
-let rec remplir_init(ljoueurs:couleur list)(dim:dimension):configuration=
-  match len ljoueurs,ljoueurs with
-  |1,[pr] -> colorie pr (remplir_triangle_bas dim (-dim-1,1,dim)),ljoueurs,dim
-  |2, pr::fin -> let lcase,joueurs,dim2 = remplir_init fin dim in 
-      colorie pr (remplir_triangle_haut dim (dim+1,-dim,-1))@lcase,[pr]@joueurs,dim2
-  |3,pr::pr2::fin -> let lcase,joueurs,dim2 = remplir_init fin dim in
-      colorie pr (remplir_triangle_bas dim (dim,-2*dim,dim))@colorie pr2 (remplir_triangle_bas dim (dim,1,-dim-1))@lcase,[pr]@[pr2]@joueurs,dim2 
-  |6,pr::pr2::pr3::fin -> let lcase,joueurs,dim2 = remplir_init fin dim in
-      colorie pr (remplir_triangle_haut dim (-dim,-dim,2*dim))@colorie pr2 (remplir_triangle_haut dim (dim+1,-dim,-1))@colorie pr3 (remplir_triangle_haut dim (-dim,dim+1,-1))@lcase,
-      [pr]@[pr2]@[pr3]@joueurs,dim2
+let rec coord_case(n:int)(ljoueurs:couleur list)(dim:dimension):case_coloree list=
+  match ljoueurs with
+  |[] -> []
+  |pr::fin -> tourner_liste_case (6/n)(colorie pr ( remplir_triangle_bas dim (-dim-1,1,dim))@coord_case n fin dim)
+;;
+
+let remplir_init(ljoueurs:couleur list)(dim:dimension):configuration=
+  coord_case (len ljoueurs) ljoueurs dim,ljoueurs,dim
 ;;
 (*Q17*)
 let quelle_couleur (c:case) ((l_case_color,l_col,dim):configuration):couleur=
