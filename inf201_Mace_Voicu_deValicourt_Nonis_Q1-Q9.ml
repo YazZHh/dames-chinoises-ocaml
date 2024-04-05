@@ -1,5 +1,5 @@
 (* -----------------------------------------------------------------------------
-   inf201_Mace_Stefan_deValicourt_Nonis_Q1-Q9.ml : cr Q1 Q9 projet
+   inf201_Mace_Voicu_deValicourt_Nonis_Q1-Q9.ml : cr projet
    Erwan Mace <Erwan.Mace@etu.univ-grenoble-alpes.fr>
    David Voicu <David.Voicu@etu.univ-grenoble-alpes.fr>
    Amaury de Valicourt <Amaury.De-Valicourt@etu.univ-grenoble-alpes.fr>
