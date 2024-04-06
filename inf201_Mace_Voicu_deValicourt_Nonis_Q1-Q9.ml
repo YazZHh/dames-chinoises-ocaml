@@ -200,18 +200,35 @@ let est_coup_valide (lcase,pr::fin,dim:configuration) (Du(c1,c2):coup) : bool =
 ;;
 
 (*Q20*)
-let rec appliquer_coup (lcase,ljoueur,dim:configuration) (Du(c1,c2):coup) : configuration =
+let rec appliquer_coup(lcase,prl::finl,dim:configuration)(Du(c1,c2):coup):configuration=
   match lcase with 
-  |(c,cou)::fin when c=c1 -> [c2,cou] @ fin,ljoueur,dim
-  |pr::fin -> let lcase2,ljoueur2,dim2= appliquer_coup (fin,ljoueur,dim) (Du(c1,c2)) in [pr] @ lcase2,ljoueur2,dim2
+  |(c,cou)::fin when c=c1 -> [c2,cou]@fin,finl@[prl],dim
+  |pr::fin -> let lcase2,ljoueur2,dim2= appliquer_coup (fin,prl::finl,dim)(Du(c1,c2)) in [pr]@lcase2,ljoueur2,dim2
 [@@warning "-8"]
-;;
+;; 
 
 (*Q21*)
 let mettre_a_jour_configuration (lcase,ljoueur,dim:configuration) (cou:coup) : configuration =
   match est_coup_valide (lcase,ljoueur,dim) cou with
   |true -> appliquer_coup (lcase,ljoueur,dim) cou
   |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer"
+;;
+(*Q22*)
+let rec pas_dans_conf (c:case) (conf:configuration):bool=
+  match conf with 
+  |([],l_col,dim) -> true
+  |(p,col)::fin,l_col,dim -> p <> c && pas_dans_conf c (fin,l_col,dim);;
+
+let rec seg_libre (x1,y1,z1:case) (x2,y2,z2:case) (conf:configuration) (u,v,w:case):bool=
+  match x2,y2,z2 with
+  |x,y,z when (x,y,z) = (x1,y1,z1) -> true
+  |x,y,z -> pas_dans_conf (x+u,y+v,z+w) &&  seg_libre (x+u,y+v,z+w) conf (u,v,w);;
+
+let rec est_libre_seg (x1,y1,z1:case) (x2,y2,z2:case) (conf:configuration):bool=
+  match x2,y2,z2 with
+  |x,y,z when x,y,z = x1,y1,z1 -> true
+  |_ -> let vect,_ = vect_et_dist (x2,y2,z2) 
+  
 ;;
 
 let couleur2string (coul:couleur) : string =
