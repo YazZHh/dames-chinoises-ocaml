@@ -101,8 +101,11 @@ let calcul_pivot (c1:case) (c2:case) : case option =
 (*Q9*)
 let vec_et_dist (c1:case) (c2:case) : vecteur*int = 
   let i,j,k = diff_case c1 c2 in
-  let d = max (max i j) k in
-  ((i/d,j/d,k/d),d);;
+  let d = max (max (abs (i)) (abs (j))) (abs (k)) in 
+  if d = 0 then 
+    (0,0,0),0
+  else
+    ((i/d,j/d,k/d),d);;
 
 (*Q10*)
 let tourner_liste (s:'a list) : 'a list =
@@ -236,7 +239,7 @@ let case_libre (c:case) (conf:configuration):bool=
 let rec est_libre_seg (x1,y1,z1:case) (x2,y2,z2:case) (conf:configuration):bool=
   let (u,v,w),dist = vec_et_dist (x1,y1,z1) (x2,y2,z2) in 
   match (x2,y2,z2),dist with
-  |_,0 = (x1,y1,z1) -> true
+  |_,0 -> true
   |_,_ -> case_libre (x2+u,y2+v,z2+w) conf && est_libre_seg (x1,y1,z1) (x2+u,y2+v,z2+w) (conf);;
 ;;
 
