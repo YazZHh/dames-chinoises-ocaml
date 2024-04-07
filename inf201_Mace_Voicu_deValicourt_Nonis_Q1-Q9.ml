@@ -213,22 +213,31 @@ let mettre_a_jour_configuration (lcase,ljoueur,dim:configuration) (cou:coup) : c
   |true -> appliquer_coup (lcase,ljoueur,dim) cou
   |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer"
 ;;
-(*Q22*)
+(*Q22 les deux solutions ne fonctionnent pas mais je vois pas pourquoi*)
 let rec pas_dans_conf (c:case) (conf:configuration):bool=
   match conf with 
   |([],l_col,dim) -> true
   |(p,col)::fin,l_col,dim -> p <> c && pas_dans_conf c (fin,l_col,dim);;
 
 let rec seg_libre (x1,y1,z1:case) (x2,y2,z2:case) (conf:configuration) (u,v,w:case):bool=
-  match x2,y2,z2 with
+  match (x2,y2,z2) with
   |x,y,z when (x,y,z) = (x1,y1,z1) -> true
-  |x,y,z -> pas_dans_conf (x+u,y+v,z+w) &&  seg_libre (x+u,y+v,z+w) conf (u,v,w);;
+  |_ -> pas_dans_conf (x2+u,y2+v,z2+w) conf &&  seg_libre (x1,y1,z1:case) (x2+u,y2+v,z2+w) conf (u,v,w);;
 
 let rec est_libre_seg (x1,y1,z1:case) (x2,y2,z2:case) (conf:configuration):bool=
   match x2,y2,z2 with
   |x,y,z when x,y,z = x1,y1,z1 -> true
   |_ -> let vect,_ = vect_et_dist (x2,y2,z2) 
-  
+
+(*OU*)
+let case_libre (c:case) (conf:configuration):bool=
+  quelle_couleur c conf = Libre;;
+
+let rec est_libre_seg (x1,y1,z1:case) (x2,y2,z2:case) (conf:configuration):bool=
+  let (u,v,w),dist = vec_et_dist (x1,y1,z1) (x2,y2,z2) in 
+  match (x2,y2,z2),dist with
+  |_,0 = (x1,y1,z1) -> true
+  |_,_ -> case_libre (x2+u,y2+v,z2+w) conf && est_libre_seg (x1,y1,z1) (x2+u,y2+v,z2+w) (conf);;
 ;;
 
 let couleur2string (coul:couleur) : string =
