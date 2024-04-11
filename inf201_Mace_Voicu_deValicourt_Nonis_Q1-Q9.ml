@@ -226,6 +226,20 @@ let rec est_libre_seg (x1,y1,z1:case) (x2,y2,z2:case) (conf:configuration):bool=
   |_,1 -> true
   |_,_ -> case_libre (x2+u,y2+v,z2+w) conf && est_libre_seg (x1,y1,z1) (x2+u,y2+v,z2+w) (conf);;
 ;;
+(*Q23*)
+let est_saut (x1,y1,z1 : case) (x2,y2,z2 : case) (l,li,dim : configuration) = 
+let (u,v,w),d = vec_et_dist (x1,y1,z1) (x2,y2,z2) in 
+(d = 2) && (est_dans_losange (x2,y2,z2) dim ) && (not (case_libre (x2+u,y2+v,z2+w) (l,li,dim))) && (case_libre (x2,y2,z2) (l,li,dim)) && (est_dans_losange (x1,y1,z1) dim);;
+
+(*Q24*)
+let rec est_saut_multiple (l : case list) (conf : configuration):bool =
+match l with 
+|[pr] -> true
+|pr::pr2::pr3::fin -> let (u,v,w),d = vec_et_dist pr2 pr3  in 
+(d = 2) && (not (case_libre pr2 conf)) && (case_libre pr3 conf) && est_saut_multiple (pr3::fin) conf
+[@@warning "-8"]
+;;
+
 
 let couleur2string (coul:couleur) : string =
   match coul with
