@@ -220,23 +220,22 @@ match l with
 [@@warning "-8"]
 ;;
 
-
-(*Q19*)
-let est_coup_valide (lcase,pr::fin,dim:configuration) (c:coup) : bool =
-  match c with
-  |Du(c1,c2) -> sont_cases_voisines c1 c2 && quelle_couleur c1 (lcase,pr::fin,dim) = pr && quelle_couleur c2 (lcase,pr::fin,dim) = Libre && est_dans_losange c2 dim
-  |Sm(l) -> est_saut_multiple l (lcase,pr::fin,dim)
-[@@warning "-8"]
-;;
-
-(*Q20*)
-
 let rec der_elem (l:'a list) : 'a =
   match l with
   |[pr] -> pr
   |t::q -> der_elem q
 [@@warning "-8"]
 ;;
+
+(*Q19*)
+let est_coup_valide (lcase,pr::fin,dim:configuration) (c:coup) : bool =
+  match c with
+  |Du(c1,c2) -> sont_cases_voisines c1 c2 && quelle_couleur c1 (lcase,pr::fin,dim) = pr && quelle_couleur c2 (lcase,pr::fin,dim) = Libre && est_dans_losange c2 dim
+  |Sm(l) -> est_saut_multiple l (lcase,pr::fin,dim) && est_dans_losange (der_elem l) dim
+[@@warning "-8"]
+;;
+
+(*Q20*)
 
 let case_deb_fin (cp:coup) : case*case =
   match cp with
