@@ -196,9 +196,36 @@ let rec supprime_dans_config (c:case) (conf:configuration) : configuration =
                                         [p,col] @ l_points,l_couleurs,dim
 ;;
 
+(*Q22*)
+let case_libre (c:case) (conf:configuration):bool=
+  quelle_couleur c conf = Libre;;
+
+let rec est_libre_seg (x1,y1,z1:case) (x2,y2,z2:case) (conf:configuration):bool=
+  let (u,v,w),dist = vec_et_dist (x1,y1,z1) (x2,y2,z2) in 
+  match (x2,y2,z2),dist with
+  |_,1 -> true
+  |_,_ -> case_libre (x2+u,y2+v,z2+w) conf && est_libre_seg (x1,y1,z1) (x2+u,y2+v,z2+w) (conf);;
+
+(*Q23*)
+let est_saut (x1,y1,z1 : case) (x2,y2,z2 : case) (l,li,dim : configuration) = 
+  let (u,v,w),d = vec_et_dist (x1,y1,z1) (x2,y2,z2) in 
+  (d = 2) && (est_dans_losange (x2,y2,z2) dim ) && (not (case_libre (x2+u,y2+v,z2+w) (l,li,dim))) && (case_libre (x2,y2,z2) (l,li,dim)) && (est_dans_losange (x1,y1,z1) dim);;
+
+(*Q24*)
+let rec est_saut_multiple (l : case list) (conf : configuration):bool =
+match l with 
+|[pr] -> true
+|pr::pr2::pr3::fin -> let (u,v,w),d = vec_et_dist pr2 pr3  in 
+(d = 2) && (not (case_libre pr2 conf)) && (case_libre pr3 conf) && est_saut_multiple (pr3::fin) conf
+[@@warning "-8"]
+;;
+
+
 (*Q19*)
-let est_coup_valide (lcase,pr::fin,dim:configuration) (Du(c1,c2):coup) : bool =
-  sont_cases_voisines c1 c2 && quelle_couleur c1 (lcase,pr::fin,dim) = pr && quelle_couleur c2 (lcase,pr::fin,dim) = Libre && est_dans_losange c2 dim
+let est_coup_valide (lcase,pr::fin,dim:configuration) (c:coup) : bool =
+  match c with
+  |Du(c1,c2) -> sont_cases_voisines c1 c2 && quelle_couleur c1 (lcase,pr::fin,dim) = pr && quelle_couleur c2 (lcase,pr::fin,dim) = Libre && est_dans_losange c2 dim
+  |Sm(l) -> est_saut_multiple l (lcase,pr::fin,dim)
 [@@warning "-8"]
 ;;
 
@@ -216,30 +243,6 @@ let mettre_a_jour_configuration (lcase,ljoueur,dim:configuration) (cou:coup) : c
   |true -> appliquer_coup (lcase,ljoueur,dim) cou
   |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer"
 ;;
-(*Q22*)
-let case_libre (c:case) (conf:configuration):bool=
-  quelle_couleur c conf = Libre;;
-
-let rec est_libre_seg (x1,y1,z1:case) (x2,y2,z2:case) (conf:configuration):bool=
-  let (u,v,w),dist = vec_et_dist (x1,y1,z1) (x2,y2,z2) in 
-  match (x2,y2,z2),dist with
-  |_,1 -> true
-  |_,_ -> case_libre (x2+u,y2+v,z2+w) conf && est_libre_seg (x1,y1,z1) (x2+u,y2+v,z2+w) (conf);;
-;;
-(*Q23*)
-let est_saut (x1,y1,z1 : case) (x2,y2,z2 : case) (l,li,dim : configuration) = 
-let (u,v,w),d = vec_et_dist (x1,y1,z1) (x2,y2,z2) in 
-(d = 2) && (est_dans_losange (x2,y2,z2) dim ) && (not (case_libre (x2+u,y2+v,z2+w) (l,li,dim))) && (case_libre (x2,y2,z2) (l,li,dim)) && (est_dans_losange (x1,y1,z1) dim);;
-
-(*Q24*)
-let rec est_saut_multiple (l : case list) (conf : configuration):bool =
-match l with 
-|[pr] -> true
-|pr::pr2::pr3::fin -> let (u,v,w),d = vec_et_dist pr2 pr3  in 
-(d = 2) && (not (case_libre pr2 conf)) && (case_libre pr3 conf) && est_saut_multiple (pr3::fin) conf
-[@@warning "-8"]
-;;
-
 
 let couleur2string (coul:couleur) : string =
   match coul with
