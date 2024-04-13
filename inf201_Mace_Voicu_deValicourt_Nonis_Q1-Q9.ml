@@ -230,8 +230,23 @@ let est_coup_valide (lcase,pr::fin,dim:configuration) (c:coup) : bool =
 ;;
 
 (*Q20*)
-let rec appliquer_coup(lcase,prl::finl,dim:configuration)(Du(c1,c2):coup):configuration=
-  match lcase with 
+
+let rec der_elem (l:'a list) : 'a =
+  match l with
+  |[pr] -> pr
+  |t::q -> der_elem q
+[@@warning "-8"]
+;;
+
+let case_deb_fin (cp:coup) : case*case =
+  match cp with
+  |Du(c1,c2) -> c1,c2
+  |Sm(l) -> List.hd l, der_elem l
+;;
+
+let rec appliquer_coup (lcase,prl::finl,dim:configuration) (cp:coup) : configuration =
+  let c1,c2 = case_deb_fin cp in
+  match lcase with
   |(c,cou)::fin when c=c1 -> [c2,cou]@fin,finl@[prl],dim
   |pr::fin -> let lcase2,ljoueur2,dim2= appliquer_coup (fin,prl::finl,dim)(Du(c1,c2)) in [pr]@lcase2,ljoueur2,dim2
 [@@warning "-8"]
