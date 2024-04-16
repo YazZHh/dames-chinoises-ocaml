@@ -213,10 +213,10 @@ let est_saut (x1,y1,z1 : case) (x2,y2,z2 : case) (l,li,dim : configuration) =
 
 (*Q24*)
 let rec est_saut_multiple (l : case list) (conf : configuration):bool =
-match l with 
-|[pr] -> true
-|pr::pr2::pr3::fin -> let (u,v,w),d = vec_et_dist pr2 pr3  in 
-(d = 2) && (not (case_libre pr2 conf)) && (case_libre pr3 conf) && est_saut_multiple (pr3::fin) conf
+  match l with 
+  |[pr] -> true
+  |pr::pr2::pr3::fin -> let (u,v,w),d = vec_et_dist pr2 pr3  in 
+                        (d = 2) && (not (case_libre pr2 conf)) && (case_libre pr3 conf) && est_saut_multiple (pr3::fin) conf
 [@@warning "-8"]
 ;;
 
@@ -258,6 +258,11 @@ let mettre_a_jour_configuration (lcase,ljoueur,dim:configuration) (cou:coup) : c
   |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer"
 ;;
 
+(*Q26*)
+let score (lcase,ljoueur,dim:configuration) : int =
+  List.fold_left (fun acc ((i,j,k),cou) -> if cou = (List.hd ljoueur) then acc + i else acc) 0 lcase
+;;
+
 let couleur2string (coul:couleur) : string =
   match coul with
   | Libre -> " . "
@@ -279,7 +284,6 @@ let rec affiche_ligne (n:int) (m:int) (config:configuration) : string =
       else (*ceci est une case ou bien en dehors du plateau*)
        (couleur2string (associe c lcc Libre)) ^ affiche_ligne n (m + 1) config;;
 
-
 let affiche (config:configuration) : unit =
   let (_,_,dim)=config in
     let rec affiche_aux n =
@@ -300,6 +304,8 @@ affiche conf_reggae;;
 let conf_vide=([],[],2);;
 affiche conf_vide;;
 
+let conf_2=remplir_init [Rouge;Vert;Bleu] 3;;
+score conf_reggae;;
 
 (*A essayer apres avoir fait remplir_init
 affiche (remplir_init [Code "Ali";Code "Bob";Code "Jim"] 3);;
