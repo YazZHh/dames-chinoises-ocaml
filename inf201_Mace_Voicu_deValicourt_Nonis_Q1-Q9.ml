@@ -280,6 +280,11 @@ let score_gagnant (d:dimension) : int =
   List.fold_right (fun x acc -> acc + x*(d+(n_ieme_elem x (List.rev l_fact)))) l_fact 0
 ;;
 
+(*Q27*)
+let gagne (lcase,ljoueur,dim:configuration) : bool =
+  score (lcase,ljoueur,dim) = score_gagnant dim
+;;
+
 let couleur2string (coul:couleur) : string =
   match coul with
   | Libre -> " . "
