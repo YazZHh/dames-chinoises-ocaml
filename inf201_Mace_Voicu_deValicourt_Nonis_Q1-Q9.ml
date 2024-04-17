@@ -263,6 +263,23 @@ let score (lcase,ljoueur,dim:configuration) : int =
   List.fold_left (fun acc ((i,j,k),cou) -> if cou = (List.hd ljoueur) then acc + i else acc) 0 lcase
 ;;
 
+let rec liste_facteurs (n:int) : int list =
+  match n with
+  |1 -> [1]
+  |x -> liste_facteurs (x-1) @ [x]
+;;
+
+let rec n_ieme_elem (n:int) (l:int list) : int =
+  match n with
+  |1 -> List.hd l
+  |x -> n_ieme_elem (x-1) (List.tl l)
+;;
+
+let score_gagnant (d:dimension) : int =
+  let l_fact = liste_facteurs (d) in
+  List.fold_right (fun x acc -> acc + x*(d+(n_ieme_elem x (List.rev l_fact)))) l_fact 0
+;;
+
 let couleur2string (coul:couleur) : string =
   match coul with
   | Libre -> " . "
@@ -272,7 +289,8 @@ let couleur2string (coul:couleur) : string =
   | Rouge -> " R "
   | Noir -> " N "
   | Bleu -> " B "
-  | Marron -> " M ";;
+  | Marron -> " M "
+;;
 
 let rec affiche_ligne (n:int) (m:int) (config:configuration) : string =
   let (lcc,_,dim)=config in
