@@ -285,6 +285,22 @@ let gagne (lcase,ljoueur,dim:configuration) : bool =
   score (lcase,ljoueur,dim) = score_gagnant dim
 ;;
 
+(*Q28*)
+let verif_coup_list (lcase,ljoueur,dim:configuration) (c:coup list) : bool =
+  List.fold_right (fun x acc -> acc && est_coup_valide (lcase,ljoueur,dim) x) c true
+;;
+
+(* À VÉRIFIER (il manque des trucs, genre tourner le plateau, etc...) La fonction est acceptée par ocaml *)
+let est_partie (lcase,ljoueur,dim:configuration) (c_l:coup list) : couleur =
+  if verif_coup_list (lcase,ljoueur,dim) c_l then
+    List.fold_left (fun acc x -> if gagne (lcase,ljoueur,dim) then (List.hd ljoueur) else acc) Libre c_l
+  else
+    failwith "La liste de coups n'est pas valide"
+;;
+
+
+
+
 let couleur2string (coul:couleur) : string =
   match coul with
   | Libre -> " . "
