@@ -178,7 +178,7 @@ let rec coord_case (n:int) (ljoueurs:couleur list) (dim:dimension) : case_colore
 ;;
 
 let remplir_init (ljoueurs:couleur list) (dim:dimension) : configuration =
-  tourner_config (coord_case (len ljoueurs) ljoueurs dim,ljoueurs,dim)
+  tourner_config (coord_case (len ljoueurs) ljoueurs dim,tourner_liste(tourner_liste(ljoueurs),dim)
 ;;
 
 (*Q17*)
