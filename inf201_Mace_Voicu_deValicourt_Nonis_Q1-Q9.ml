@@ -289,6 +289,9 @@ let gagne (lcase,ljoueur,dim:configuration) : bool =
 let verif_coup_list (lcase,ljoueur,dim:configuration) (c:coup list) : bool =
   List.fold_right (fun x acc -> acc && est_coup_valide (lcase,ljoueur,dim) x) c true
 ;;
+let verif_coup_list_v2 (conf:configuration) (lcoups:coup list) : bool =
+  fst(List.fold_left (fun acc coup -> let verite,config = acc in verite && est_coup_valide config coup,appliquer_coup config coup) (true,conf) lcoups)
+;;
 
 (* À VÉRIFIER (il manque des trucs, genre tourner le plateau, etc...) La fonction est acceptée par ocaml *)
 let est_partie (lcase,ljoueur,dim:configuration) (c_l:coup list) : couleur =
@@ -298,7 +301,11 @@ let est_partie (lcase,ljoueur,dim:configuration) (c_l:coup list) : couleur =
     failwith "La liste de coups n'est pas valide"
 ;;
 
+(*
+let conf_2=remplir_init [Rouge;Vert;Bleu] 3
+est_coup_valide conf_2 (Du((-5,3,2),(-3,3,1))) renvoie true alors que c'est pas censé
 
+*)
 
 
 let couleur2string (coul:couleur) : string =
