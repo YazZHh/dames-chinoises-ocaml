@@ -254,7 +254,7 @@ let rec appliquer_coup (lcase,prl::finl,dim:configuration) (cp:coup) : configura
 (*Q21*)
 let mettre_a_jour_configuration (lcase,ljoueur,dim:configuration) (cou:coup) : configuration =
   match est_coup_valide (lcase,ljoueur,dim) cou with
-  |true -> appliquer_coup (lcase,ljoueur,dim) cou
+  |true -> tourner_config(appliquer_coup (lcase,ljoueur,dim) cou)
   |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer"
 ;;
 
