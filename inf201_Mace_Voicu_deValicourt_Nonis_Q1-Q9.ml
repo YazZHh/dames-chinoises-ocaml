@@ -230,7 +230,7 @@ let rec der_elem (l:'a list) : 'a =
 (*Q19*)
 let est_coup_valide (lcase,pr::fin,dim:configuration) (c:coup) : bool =
   match c with
-  |Du(c1,c2) -> not(sont_cases_voisines c1 c2) && quelle_couleur c1 (lcase,pr::fin,dim) = pr && quelle_couleur c2 (lcase,pr::fin,dim) = Libre && est_dans_losange c2 dim
+  |Du(c1,c2) -> est_case c1 && est_case c2 && not(sont_cases_voisines c1 c2) && quelle_couleur c1 (lcase,pr::fin,dim) = pr && quelle_couleur c2 (lcase,pr::fin,dim) = Libre && est_dans_losange c2 dim
   |Sm(l) -> est_saut_multiple l (lcase,pr::fin,dim) && est_dans_losange (der_elem l) dim
 [@@warning "-8"]
 ;;
@@ -286,12 +286,12 @@ let gagne (lcase,ljoueur,dim:configuration) : bool =
 ;;
 
 (*Q28*)
-let verif_coup_list (lcase,ljoueur,dim:configuration) (c:coup list) : bool =
-  List.fold_right (fun x acc -> acc && est_coup_valide (lcase,ljoueur,dim) x) c true
+let verif_coup_list (conf:configuration) (lcoups:coup list) : bool =
+  fst(List.fold_left (fun acc coup -> let verite,config = acc in 
+                       verite && est_coup_valide config coup, if est_coup_valide config coup then  mettre_a_jour_configuration config coup
+                       else config) (true,conf) lcoups)
 ;;
-let verif_coup_list_v2 (conf:configuration) (lcoups:coup list) : bool =
-  fst(List.fold_left (fun acc coup -> let verite,config = acc in verite && est_coup_valide config coup,mettre_a_jour_configuration config coup) (true,conf) lcoups)
-;;
+
 
 (* À VÉRIFIER (il manque des trucs, genre tourner le plateau, etc...) La fonction est acceptée par ocaml *)
 let est_partie (lcase,ljoueur,dim:configuration) (c_l:coup list) : couleur =
@@ -300,12 +300,6 @@ let est_partie (lcase,ljoueur,dim:configuration) (c_l:coup list) : couleur =
   else
     failwith "La liste de coups n'est pas valide"
 ;;
-
-(*
-let conf_2=remplir_init [Rouge;Vert;Bleu] 3
-est_coup_valide conf_2 (Du((-5,3,2),(-3,3,1))) renvoie true alors que c'est pas censé
-
-*)
 
 
 let couleur2string (coul:couleur) : string =
