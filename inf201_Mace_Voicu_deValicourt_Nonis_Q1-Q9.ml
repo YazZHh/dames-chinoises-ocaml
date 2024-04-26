@@ -293,7 +293,6 @@ let verif_coup_list (conf:configuration) (lcoups:coup list) : bool =
 ;;
 
 
-(* À VÉRIFIER (il manque des trucs, genre tourner le plateau, etc...) La fonction est acceptée par ocaml *)
 let est_partie (lcase,ljoueur,dim:configuration) (c_l:coup list) : couleur =
   if verif_coup_list (lcase,ljoueur,dim) c_l then
     List.fold_left (fun acc x -> if gagne (lcase,ljoueur,dim) then (List.hd ljoueur) else acc) Libre c_l
