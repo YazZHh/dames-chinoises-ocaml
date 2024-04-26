@@ -214,12 +214,12 @@ let est_saut (x1,y1,z1 : case) (x2,y2,z2 : case) (l,li,dim : configuration) =
 (*Q24*)
 let rec est_saut_multiple (l : case list) (conf : configuration):bool =
   match l with 
-  |[pr] -> true
-  |pr::pr2::pr3::fin -> let (u,v,w),d = vec_et_dist pr2 pr3  in 
-                        (d = 2) && (not (case_libre pr2 conf)) && (case_libre pr3 conf) && est_saut_multiple (pr3::fin) conf
+  |[a] -> est_case a
+  |(x1,y1,z1)::(x2,y2,z2)::fin -> let (u,v,w),d = vec_et_dist (x1,y1,z1) (x2,y2,z2)  in 
+      est_case (x2,y2,z2) && est_case (x2,y2,z2) && (d = 2) && (not (case_libre (x2+u,y2+v,z2+w) conf)) && (case_libre (x2,y2,z2) conf) && 
+      est_saut_multiple ((x2,y2,z2)::fin) conf
 [@@warning "-8"]
 ;;
-
 let rec der_elem (l:'a list) : 'a =
   match l with
   |[pr] -> pr
