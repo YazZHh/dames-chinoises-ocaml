@@ -290,7 +290,7 @@ let verif_coup_list (lcase,ljoueur,dim:configuration) (c:coup list) : bool =
   List.fold_right (fun x acc -> acc && est_coup_valide (lcase,ljoueur,dim) x) c true
 ;;
 let verif_coup_list_v2 (conf:configuration) (lcoups:coup list) : bool =
-  fst(List.fold_left (fun acc coup -> let verite,config = acc in verite && est_coup_valide config coup,appliquer_coup config coup) (true,conf) lcoups)
+  fst(List.fold_left (fun acc coup -> let verite,config = acc in verite && est_coup_valide config coup,mettre_a_jour_configuration config coup) (true,conf) lcoups)
 ;;
 
 (* À VÉRIFIER (il manque des trucs, genre tourner le plateau, etc...) La fonction est acceptée par ocaml *)
