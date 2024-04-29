@@ -267,12 +267,14 @@ let score (lcase,ljoueur,dim:configuration) : int =
   List.fold_left (fun acc ((i,j,k),cou) -> if cou = (List.hd ljoueur) then acc + i else acc) 0 lcase
 ;;
 
+(* Renvoie une liste des entiers de 1 à n *)
 let rec liste_facteurs (n:int) : int list =
   match n with
   |1 -> [1]
   |x -> liste_facteurs (x-1) @ [x]
 ;;
 
+(* Renvoie le n-ième élément de la liste l *)
 let rec n_ieme_elem (n:int) (l:int list) : int =
   match n with
   |1 -> List.hd l
