@@ -68,7 +68,7 @@ let tourner_case (m:int) (c:case) : case =
 		|3 | -3 -> (-i,-j,-k)
 		|4 | -2 -> (k,i,j)
 		|5 | -1 -> (-j,-k,-i)
-[@@warning "-8"]  
+[@@warning "-8"]  (*Içi on traite bien tout les cas donc pas de problème*)
 ;;
 
 (*Q5*)
@@ -171,12 +171,13 @@ let tourner_config (case_col,coul,dim:configuration) : configuration =
 ;;
 
 (*Q16*)
+(*Fonction auxiliaire qui permet d'obtenir une liste de toute les case d'une config initiale*)
 let rec coord_case (n:int) (ljoueurs:couleur list) (dim:dimension) : case_coloree list =
   match ljoueurs with
   |[] -> []
   |pr::fin -> tourner_liste_case (-1*6/n) (colorie pr ( remplir_triangle_bas dim (-dim-1,1,dim))@coord_case n fin dim)
 ;;
-
+(*On a plus qu'a utiliser coord_case pour placer toute les cases de la liste obtenue*)
 let remplir_init (ljoueurs:couleur list) (dim:dimension) : configuration =
   tourner_config (coord_case (len ljoueurs) ljoueurs dim,tourner_liste(tourner_liste(ljoueurs)),dim)
 ;;
@@ -197,6 +198,7 @@ let rec supprime_dans_config (c:case) (conf:configuration) : configuration =
 ;;
 (*Question dans le désordre pour le bon fonctionnement du programme*)
 (*Q22*)
+(*Petite fonction auxiliaire qui renvoi true si une case est libre (pour simplifier les fonctions suivante)*)
 let case_libre (c:case) (conf:configuration):bool=
   quelle_couleur c conf = Libre;;
 
@@ -220,13 +222,14 @@ let rec est_saut_multiple (l : case list) (conf : configuration):bool =
       est_saut_multiple ((x2,y2,z2)::fin) conf
 [@@warning "-8"]
 ;;
-
+(*Encore une fonction auxiliaire pour simplifier les fonctions, ici c'est pour obtenir le dernier élément d'une liste*)
 let rec der_elem (l:'a list) : 'a =
   match l with
   |[pr] -> pr
   |t::q -> der_elem q
 [@@warning "-8"]
 ;;
+(*Les deux matchs ici sont non exhaustive car on ne traite pas le cas d'une liste vide mais c'est voulu*)
 
 (*Q19*)
 let est_coup_valide (lcase,pr::fin,dim:configuration) (c:coup) : bool =
