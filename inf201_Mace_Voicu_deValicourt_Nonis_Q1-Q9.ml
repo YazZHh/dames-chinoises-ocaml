@@ -350,15 +350,18 @@ let affiche (config:configuration) : unit =
       affiche_aux (n - 1)
       end
     in
-    affiche_aux (2*dim+1);;
+    affiche_aux (2*dim+1)
+;;
 
-let conf_1=([((0,0,0),Jaune)],[Jaune],2);;
+(*Voici une liste de test réalisé pour garantir le bon fonctionnement du programme*)
+
+(*let conf_1=([((0,0,0),Jaune)],[Jaune],2);;
 affiche conf_1;;
 let conf_reggae=([((0,-1,1),Vert);((0,0,0),Jaune);((0,1,-1),Rouge)],[Vert;Jaune;Rouge],1);;
 affiche conf_reggae;;
 let conf_vide=([],[],2);;
 affiche conf_vide;;
-(*Voici une liste de test réalisé pour garantir le bon fonctionnement du programme*)
+
 let conf_2=remplir_init [Rouge;Vert;Bleu] 3;;
 score conf_reggae;;
 
@@ -433,9 +436,7 @@ let coup_liste_conf3 = [Du ((-2, 1, 1), (-1, 1, 0));
 verif_coup_list conf3 coup_liste_conf3;; 
 est_partie conf3 coup_liste_conf3;; 
 
-
-
-let conf_test_multiples = remplir_init [Rouge;Bleu;Vert] 3;
+let conf_test_multiples = remplir_init [Rouge;Bleu;Vert] 3;;
 affiche conf_test_multiples;;
 
 let conf_test_multiples_c1 = mettre_a_jour_configuration conf_test_multiples (Sm[(-5,2,3);(-3,2,1)]);;
@@ -448,5 +449,19 @@ affiche conf_test_multiples_c1_2t;;
 let conf_test_multiples_c2 = mettre_a_jour_configuration conf_test_multiples_c1_2t (Sm[(-5,3,2);(-3,3,0);(-3,1,2)]);;
 affiche conf_test_multiples_c2;;
 
+
+
+(* Le coup ci-dessous n'est pas valide, on recoit un message de l'interpréteur nous l'indiquant *)
+let conf_test_multiples_erreur = mettre_a_jour_configuration conf_test_multiples_c2 (Sm[(-5,3,2);(-3,1,2);(-1,1,0)]);;
+
+let conf_test_multiples_c3 = mettre_a_jour_configuration conf_test_multiples_c2 (Sm[(-5,2,3);(-3,0,3)]);;
+let conf_test_multiples_c3_2t = tourner_config (tourner_config conf_test_multiples_c3);;
+(* Sortie du losange : ne fonctionne pas *)
+let conf_test_multiples_hore_losange = mettre_a_jour_configuration conf_test_multiples_c3_2t (Sm[(-5,3,2);(-3,1,2);(-3,4,-1)]);;
+
+
+
+
 (* let sauts = (Sm[(-5,3,2);(-3,3,0);(-3,1,2)]);; *)
-(* est_saut_multiple [(-5,3,2);(-3,3,0);(-3,1,2)] conf_test_multiples_c1_2t;; *)
+est_saut_multiple [(-5,3,2);(-3,3,0);(-3,1,2)] conf_test_multiples_c1_2t;;
+*)
