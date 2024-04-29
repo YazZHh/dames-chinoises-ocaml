@@ -1,9 +1,9 @@
 (* -----------------------------------------------------------------------------
    inf201_Mace_Voicu_deValicourt_Nonis.ml : cr projet
-   Erwan Mace <Erwan.Mace@etu.univ-grenoble-alpes.fr>
-   David Voicu <David.Voicu@etu.univ-grenoble-alpes.fr>
-   Amaury de Valicourt <Amaury.De-Valicourt@etu.univ-grenoble-alpes.fr>
-   Dario Nonis <Dario.Nonis@etu.univ-grenoble-alpes.fr>
+   Erwan Mace <Erwan.Mace@etu.univ-grenoble-alpes.fr>              
+   David Voicu <David.Voicu@etu.univ-grenoble-alpes.fr>                 \
+   Amaury de Valicourt <Amaury.De-Valicourt@etu.univ-grenoble-alpes.fr>  > Groupe IMA 4/Groupe TP O et N
+   Dario Nonis <Dario.Nonis@etu.univ-grenoble-alpes.fr>                 /
    -------------------------------------------------------------------------- *)
 
 type dimension = int;; (*restreint aux entiers strictement positifs*)
