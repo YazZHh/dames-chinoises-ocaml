@@ -298,14 +298,14 @@ let verif_coup_list (conf:configuration) (lcoups:coup list) : bool =
 
 
 let est_partie (config:configuration) (c_l:coup list) : couleur =
-  if verif_coup_list config c_l then
-
+  if verif_coup_list config c_l then 
     fst(List.fold_left (fun acc coup -> let coul,(lcase,ljoueur,dim) = acc in 
-                        if gagne (lcase,ljoueur,dim) then
-                          (List.hd ljoueur,(lcase,ljoueur,dim))
-                        else
-                          (coul,mettre_a_jour_configuration (lcase,ljoueur,dim) coup))
-        (Libre,config) c_l)
+                         let lcase_c,ljoueur_c,dim_c = mettre_a_jour_configuration (lcase,ljoueur,dim) coup in
+                         if (gagne (lcase_c,ljoueur_c,dim_c)) then
+                           (List.hd ljoueur_c),(lcase_c,ljoueur_c,dim_c)
+                         else
+                           (coul,(lcase_c,ljoueur_c,dim_c)))
+          (Libre,config) c_l)
   
   else
     failwith "La liste de coups n'est pas valide"
