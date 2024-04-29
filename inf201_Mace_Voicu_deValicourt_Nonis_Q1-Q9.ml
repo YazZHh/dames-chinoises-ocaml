@@ -177,9 +177,16 @@ let rec coord_case (n:int) (ljoueurs:couleur list) (dim:dimension) : case_colore
   |[] -> []
   |pr::fin -> tourner_liste_case (-1*6/n) (colorie pr ( remplir_triangle_bas dim (-dim-1,1,dim))@coord_case n fin dim)
 ;;
-(*On a plus qu'a utiliser coord_case pour placer toute les cases de la liste obtenue*)
+
+let rec effacer_dernier (l:'a list) : 'a list =
+  match l with
+  |[pr] -> []
+  |t::q -> t::(effacer_dernier q)
+[@@warning "-8"]
+;;
+
 let remplir_init (ljoueurs:couleur list) (dim:dimension) : configuration =
-  tourner_config (coord_case (len ljoueurs) ljoueurs dim,tourner_liste(tourner_liste(ljoueurs)),dim)
+  tourner_config (coord_case (len ljoueurs) ljoueurs dim,[der_liste ljoueurs]@(effacer_dernier ljoueurs),dim)
 ;;
 
 (*Q17*)
@@ -352,6 +359,19 @@ affiche conf_vide;;
 (*Voici une liste de test réalisé pour garantir le bon fonctionnement du programme*)
 let conf_2=remplir_init [Rouge;Vert;Bleu] 3;;
 score conf_reggae;;
+
+
+let conf_test1 = remplir_init [Vert;Jaune;Rouge;Noir;Bleu;Marron] 3;;
+affiche conf_test1;;
+
+let conf_test2 = remplir_init [Vert;Jaune;Rouge;] 3;;
+affiche conf_test2;;
+
+let conf_test3 = remplir_init [Vert;Jaune] 3;;
+affiche conf_test3;;
+
+let conf_test4 = remplir_init [Vert] 3;;
+affiche conf_test4;;
 
 
 let conf3 = remplir_init [Rouge;Vert;Bleu] 1;;
