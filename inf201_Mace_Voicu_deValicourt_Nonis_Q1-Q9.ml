@@ -220,6 +220,7 @@ let rec est_saut_multiple (l : case list) (conf : configuration):bool =
       est_saut_multiple ((x2,y2,z2)::fin) conf
 [@@warning "-8"]
 ;;
+
 let rec der_elem (l:'a list) : 'a =
   match l with
   |[pr] -> pr
@@ -230,7 +231,7 @@ let rec der_elem (l:'a list) : 'a =
 (*Q19*)
 let est_coup_valide (lcase,pr::fin,dim:configuration) (c:coup) : bool =
   match c with
-  |Du(c1,c2) -> est_case c1 && est_case c2 && not(sont_cases_voisines c1 c2) && quelle_couleur c1 (lcase,pr::fin,dim) = pr && quelle_couleur c2 (lcase,pr::fin,dim) = Libre && est_dans_losange c2 dim
+  |Du(c1,c2) -> est_case c1 && est_case c2 && sont_cases_voisines c1 c2 && quelle_couleur c1 (lcase,pr::fin,dim) = pr && quelle_couleur c2 (lcase,pr::fin,dim) = Libre && est_dans_losange c2 dim
   |Sm(l) -> est_saut_multiple l (lcase,pr::fin,dim) && est_dans_losange (der_elem l) dim
 [@@warning "-8"]
 ;;
@@ -246,8 +247,8 @@ let case_deb_fin (cp:coup) : case*case =
 let rec appliquer_coup (lcase,prl::finl,dim:configuration) (cp:coup) : configuration =
   let c1,c2 = case_deb_fin cp in
   match lcase with
-  |(c,cou)::fin when c=c1 -> [c2,cou]@fin,finl@[prl],dim
-  |pr::fin -> let lcase2,ljoueur2,dim2= appliquer_coup (fin,prl::finl,dim)(Du(c1,c2)) in [pr]@lcase2,ljoueur2,dim2
+  |(c,cou)::fin when c=c1 -> [c2,cou]@fin,[prl]@finl,dim
+  |pr::fin -> let lcase2,ljoueur2,dim2 = appliquer_coup (fin,prl::finl,dim)(Du(c1,c2)) in [pr]@lcase2,ljoueur2,dim2
 [@@warning "-8"]
 ;; 
 
@@ -288,14 +289,24 @@ let gagne (lcase,ljoueur,dim:configuration) : bool =
 (*Q28*)
 let verif_coup_list (conf:configuration) (lcoups:coup list) : bool =
   fst(List.fold_left (fun acc coup -> let verite,config = acc in 
-                       verite && est_coup_valide config coup, if est_coup_valide config coup then  mettre_a_jour_configuration config coup
-                       else config) (true,conf) lcoups)
+                       verite && est_coup_valide config coup, if est_coup_valide config coup then
+                                                                mettre_a_jour_configuration config coup
+                                                              else
+                                                                config)
+      (true,conf) lcoups)
 ;;
 
 
-let est_partie (lcase,ljoueur,dim:configuration) (c_l:coup list) : couleur =
-  if verif_coup_list (lcase,ljoueur,dim) c_l then
-    List.fold_left (fun acc x -> if gagne (lcase,ljoueur,dim) then (List.hd ljoueur) else acc) Libre c_l
+let est_partie (config:configuration) (c_l:coup list) : couleur =
+  if verif_coup_list config c_l then
+
+    fst(List.fold_left (fun acc coup -> let coul,(lcase,ljoueur,dim) = acc in 
+                        if gagne (lcase,ljoueur,dim) then
+                          (List.hd ljoueur,(lcase,ljoueur,dim))
+                        else
+                          (coul,mettre_a_jour_configuration (lcase,ljoueur,dim) coup))
+        (Libre,config) c_l)
+  
   else
     failwith "La liste de coups n'est pas valide"
 ;;
@@ -346,6 +357,60 @@ affiche conf_vide;;
 let conf_2=remplir_init [Rouge;Vert;Bleu] 3;;
 score conf_reggae;;
 
-(*A essayer apres avoir fait remplir_init
-affiche (remplir_init [Code "Ali";Code "Bob";Code "Jim"] 3);;
-*)
+
+let conf3 = remplir_init [Rouge;Vert;Bleu] 1;;
+affiche conf3;;
+
+let conf3_c1 = mettre_a_jour_configuration conf3 (Du((-2,1,1),(-1,1,0)));;
+affiche conf3_c1;;
+
+let conf3_c2 = mettre_a_jour_configuration conf3_c1 (Du((-2,1,1),(-1,1,0)));;
+affiche conf3_c2;;
+
+let conf3_c3 = mettre_a_jour_configuration conf3_c2 (Du((-2,1,1),(-1,0,1)));;
+affiche conf3_c3;;
+
+let conf3_c4 = mettre_a_jour_configuration conf3_c3 (Du((-1,1,0),(0,0,0)));;
+affiche conf3_c4;; 
+
+let conf3_c5 = mettre_a_jour_configuration conf3_c4 (Du((-1,1,0),(0,1,-1)));;
+affiche conf3_c5;;
+
+let conf3_c6 = mettre_a_jour_configuration conf3_c5 (Du((-1,0,1),(0,-1,1)));;
+affiche conf3_c6;;
+
+let conf3_c7 = mettre_a_jour_configuration conf3_c6 (Du((0,0,0),(1,0,-1)));;
+affiche conf3_c7;;
+
+let conf3_c8 = mettre_a_jour_configuration conf3_c7 (Du((0,1,-1),(0,0,0)));;
+affiche conf3_c8;;
+
+let conf3_c9 = mettre_a_jour_configuration conf3_c8 (Du((0,-1,1),(1,-1,0)));;
+affiche conf3_c9;;
+
+let conf3_c10 = mettre_a_jour_configuration conf3_c9 (Du((1,0,-1),(2,-1,-1)));;
+affiche conf3_c10;;
+
+let conf3_c11 = mettre_a_jour_configuration conf3_c10 (Du((0,0,0),(1,-1,0)));;
+affiche conf3_c11;;
+
+let conf3_c12 = mettre_a_jour_configuration conf3_c11 (Du((1,-1,0),(2,-1,-1)));;
+affiche conf3_c12;;
+
+gagne conf3_c12;; (* renvoie true*)
+
+let coup_liste_conf3 = [Du((-2,1,1),(-1,1,0));
+                          Du((-2,1,1),(-1,1,0));
+                          Du((-2,1,1),(-1,0,1));
+                          Du((-1,1,0),(0,0,0));
+                          Du((-1,1,0),(0,1,-1));
+                          Du((-1,0,1),(0,-1,1));
+                          Du((0,0,0),(1,0,-1));
+                          Du((0,1,-1),(0,0,0));
+                          Du((0,-1,1),(1,-1,0));
+                          Du((0,-1,1),(1,-1,0));
+                          Du((0,0,0),(1,-1,0));
+                          Du((1,-1,0),(2,-1,-1))];;
+                          
+verif_coup_list conf3 coup_liste_conf3;; (*renvoie false au lieu de true*)
+est_partie conf3 coup_liste_conf3;; (*du coup ne foncionne pas*)
