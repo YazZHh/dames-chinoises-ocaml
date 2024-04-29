@@ -1,5 +1,5 @@
 (* -----------------------------------------------------------------------------
-   inf201_Mace_Voicu_deValicourt_Nonis_Q1-Q9.ml : cr projet
+   inf201_Mace_Voicu_deValicourt_Nonis.ml : cr projet
    Erwan Mace <Erwan.Mace@etu.univ-grenoble-alpes.fr>
    David Voicu <David.Voicu@etu.univ-grenoble-alpes.fr>
    Amaury de Valicourt <Amaury.De-Valicourt@etu.univ-grenoble-alpes.fr>
@@ -195,7 +195,7 @@ let rec supprime_dans_config (c:case) (conf:configuration) : configuration =
                                       else
                                         [p,col] @ l_points,l_couleurs,dim
 ;;
-
+(*Question dans le désordre pour le bon fonctionnement du programme*)
 (*Q22*)
 let case_libre (c:case) (conf:configuration):bool=
   quelle_couleur c conf = Libre;;
@@ -353,7 +353,7 @@ let conf_reggae=([((0,-1,1),Vert);((0,0,0),Jaune);((0,1,-1),Rouge)],[Vert;Jaune;
 affiche conf_reggae;;
 let conf_vide=([],[],2);;
 affiche conf_vide;;
-
+(*Voici une liste de test réalisé pour garantir le bon fonctionnement du programme*)
 let conf_2=remplir_init [Rouge;Vert;Bleu] 3;;
 score conf_reggae;;
 
@@ -412,5 +412,5 @@ let coup_liste_conf3 = [Du ((-2, 1, 1), (-1, 1, 0));
                         Du((0,0,0),(1,-1,0));
                         Du((1,-1,0),(2,-1,-1))];; 
                           
-verif_coup_list conf3 coup_liste_conf3;; (*renvoie false au lieu de true*)
-est_partie conf3 coup_liste_conf3;; (*du coup ne foncionne pas*)
+verif_coup_list conf3 coup_liste_conf3;; 
+est_partie conf3 coup_liste_conf3;; 
