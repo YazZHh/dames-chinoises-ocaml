@@ -222,20 +222,13 @@ let rec est_saut_multiple (l : case list) (conf : configuration):bool =
       est_saut_multiple ((x2,y2,z2)::fin) conf
 [@@warning "-8"]
 ;;
-(*Encore une fonction auxiliaire pour simplifier les fonctions, ici c'est pour obtenir le dernier élément d'une liste*)
-let rec der_elem (l:'a list) : 'a =
-  match l with
-  |[pr] -> pr
-  |t::q -> der_elem q
-[@@warning "-8"]
-;;
-(*Les deux matchs ici sont non exhaustive car on ne traite pas le cas d'une liste vide mais c'est voulu*)
+(*Le match ici est non exhaustive car on ne traite pas le cas d'une liste vide mais c'est voulu*)
 
 (*Q19*)
 let est_coup_valide (lcase,pr::fin,dim:configuration) (c:coup) : bool =
   match c with
   |Du(c1,c2) -> est_case c1 && est_case c2 && sont_cases_voisines c1 c2 && quelle_couleur c1 (lcase,pr::fin,dim) = pr && quelle_couleur c2 (lcase,pr::fin,dim) = Libre && est_dans_losange c2 dim
-  |Sm(l) -> est_saut_multiple l (lcase,pr::fin,dim) && est_dans_losange (der_elem l) dim
+  |Sm(l) -> est_saut_multiple l (lcase,pr::fin,dim) && est_dans_losange (der_liste l) dim
 [@@warning "-8"]
 ;;
 
@@ -244,7 +237,7 @@ let est_coup_valide (lcase,pr::fin,dim:configuration) (c:coup) : bool =
 let case_deb_fin (cp:coup) : case*case =
   match cp with
   |Du(c1,c2) -> c1,c2
-  |Sm(l) -> List.hd l, der_elem l
+  |Sm(l) -> List.hd l, der_liste l
 ;;
 
 let rec appliquer_coup (lcase,prl::finl,dim:configuration) (cp:coup) : configuration =
