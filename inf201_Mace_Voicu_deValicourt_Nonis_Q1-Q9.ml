@@ -430,3 +430,21 @@ let coup_liste_conf3 = [Du ((-2, 1, 1), (-1, 1, 0));
                           
 verif_coup_list conf3 coup_liste_conf3;; 
 est_partie conf3 coup_liste_conf3;; 
+
+
+
+let conf_test_multiples = remplir_init [Rouge;Bleu;Vert] 3;
+affiche conf_test_multiples;;
+
+let conf_test_multiples_c1 = mettre_a_jour_configuration conf_test_multiples (Sm[(-5,2,3);(-3,2,1)]);;
+(* est_saut_multiple [(-5,2,3);(-3,2,1)] conf_test_multiples;; *)
+affiche conf_test_multiples_c1;;
+
+let conf_test_multiples_c1_2t = tourner_config (tourner_config conf_test_multiples_c1);;
+affiche conf_test_multiples_c1_2t;;
+
+let conf_test_multiples_c2 = mettre_a_jour_configuration conf_test_multiples_c1_2t (Sm[(-5,3,2);(-3,3,0);(-3,1,2)]);;
+affiche conf_test_multiples_c2;;
+
+(* let sauts = (Sm[(-5,3,2);(-3,3,0);(-3,1,2)]);; *)
+(* est_saut_multiple [(-5,3,2);(-3,3,0);(-3,1,2)] conf_test_multiples_c1_2t;; *)
