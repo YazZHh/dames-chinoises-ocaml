@@ -177,7 +177,7 @@ let rec coord_case (n:int) (ljoueurs:couleur list) (dim:dimension) : case_colore
   |[] -> []
   |pr::fin -> tourner_liste_case (-1*6/n) (colorie pr ( remplir_triangle_bas dim (-dim-1,1,dim))@coord_case n fin dim)
 ;;
-
+(*Fonction auxiliaire pour permettre d'effacer le dernier element d'une liste*)
 let rec effacer_dernier (l:'a list) : 'a list =
   match l with
   |[pr] -> []
@@ -187,7 +187,7 @@ let rec effacer_dernier (l:'a list) : 'a list =
 
 let remplir_init (ljoueurs:couleur list) (dim:dimension) : configuration =
   tourner_config (coord_case (len ljoueurs) ljoueurs dim,[der_liste ljoueurs]@(effacer_dernier ljoueurs),dim)
-;;
+;;(*Pour la liste des joueur on doit deplacer le dernier élément au debut de la liste pour que l'ordre correspond avec celui du plateau*)
 
 (*Q17*)
 let quelle_couleur (c:case) ((l_case_color,l_col,dim):configuration) : couleur=
@@ -225,7 +225,7 @@ let rec est_saut_multiple (l : case list) (conf : configuration):bool =
   match l with 
   |[a] -> est_case a
   |(x1,y1,z1)::(x2,y2,z2)::fin -> let (u,v,w),d = vec_et_dist (x1,y1,z1) (x2,y2,z2)  in 
-      est_case (x2,y2,z2) && est_case (x2,y2,z2) && (d = 2) && (not (case_libre (x2+u,y2+v,z2+w) conf)) && (case_libre (x2,y2,z2) conf) && 
+      est_case (x1,y1,z1) && est_case (x2,y2,z2) && (d = 2) && (not (case_libre (x2+u,y2+v,z2+w) conf)) && (case_libre (x2,y2,z2) conf) && 
       est_saut_multiple ((x2,y2,z2)::fin) conf
 [@@warning "-8"]
 ;;
@@ -240,7 +240,7 @@ let est_coup_valide (lcase,pr::fin,dim:configuration) (c:coup) : bool =
 ;;
 
 (*Q20*)
-
+(*Cette fonction renvoie un couple avec la première et la dernière case d'un coup peu import le type du coup*)
 let case_deb_fin (cp:coup) : case*case =
   match cp with
   |Du(c1,c2) -> c1,c2
